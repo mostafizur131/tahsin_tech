@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@layer base {
+/* @layer base {
 
   [type="text"],
   [type="email"],
@@ -31,4 +30,4 @@
   [type="checkbox"] {
     @apply rounded;
   }
-}
+} */
