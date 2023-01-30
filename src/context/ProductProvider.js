@@ -1,16 +1,27 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  initialState,
+  productReducer,
+} from "../state/ProductState/productReducer";
+import { productTypes } from "../state/ProductState/ProductTypes";
 
 const PRODUCT_CONTEXT = createContext();
 
 const ProductProvider = ({ children }) => {
-  const [data, setData] = useState([]);
+  const [state, dispatch] = useReducer(productReducer, initialState);
 
   useEffect(() => {
+    dispatch({ type: productTypes.FETCH_LOADING });
     fetch("https://tahsin-tech-server.vercel.app/products")
       .then((res) => res.json())
-      .then((data) => setData(data.data));
+      .then((data) => {
+        dispatch({ type: productTypes.FETCH_SUCCESS, payload: data });
+      })
+      .catch((err) => {
+        dispatch({ type: productTypes.FETCH_ERROR });
+      });
   }, []);
-  const value = { data };
+  const value = { state, dispatch };
 
   return (
     <PRODUCT_CONTEXT.Provider value={value}>
